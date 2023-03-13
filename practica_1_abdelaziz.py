@@ -21,7 +21,7 @@ def min_list(lista):
     """
     Calcula el valor mínimo de una lista de enteros ignorando los valores -1.
     """
-    lista_filtrada = [x for x in lista if x > 0]
+    lista_filtrada = [x for x in lista if x != -1]
     if lista_filtrada:
         return min(lista_filtrada)
     return -1
@@ -38,7 +38,7 @@ def producir(valor, semaforo_general, semaforo, index, comparacion, finalizado):
         
         # Producción del siguiente valor
         print(f"Producer {current_process().name} produciendo")
-        valor.value += randint(2, 10)
+        valor.value += randint(5, 100)
         delay()
 
         # Almacenamos el valor
@@ -50,9 +50,9 @@ def producir(valor, semaforo_general, semaforo, index, comparacion, finalizado):
     # El productor ya ha terminado de producir, ajustamos las variables compartidas
     print(f"Producer {current_process().name} finalizado")
     semaforo.acquire()
+    finalizado.acquire()
     valor.value = -1
     comparacion[index.value] = -1
-    finalizado.acquire()
     semaforo_general.acquire()
 
         
@@ -154,7 +154,7 @@ def main():
     
     # Mostramos el almacén final ya ordenado
     print("Almacén final", almacen_final[:])
-    
+
 
 if __name__ == "__main__":
     main()
